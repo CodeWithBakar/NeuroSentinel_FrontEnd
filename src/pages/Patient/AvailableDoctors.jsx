@@ -25,10 +25,7 @@ export default function AvailableDoctors() {
   const filteredDoctors = doctors.filter(
     (doctor) =>
       doctor.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.doctor.specialization
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      doctor.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
