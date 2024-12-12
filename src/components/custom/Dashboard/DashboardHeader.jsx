@@ -1,9 +1,10 @@
 import { Bell, Settings } from "lucide-react";
 import React from "react";
 import { JoinMeetingForm } from "../JoinMeetingForm";
+import { useAuth } from "@/context/AuthContext";
 
 export const DashboardHeader = ({ title }) => {
-  // const { meetingCode } = useAuth();
+  const { user } = useAuth();
   return (
     <div className="flex justify-between items-center px-2 py-6 mx-4">
       <h1 className="font-extrabold text-3xl">{title}</h1>
@@ -19,7 +20,7 @@ export const DashboardHeader = ({ title }) => {
           >
             Copy Meeting code : {meetingCode}
           </button> */}
-          {/* <JoinMeetingForm /> */}
+          {user && user.role == "doctor" && <JoinMeetingForm />}
         </React.Fragment>
         {/* )} */}
         <Bell />

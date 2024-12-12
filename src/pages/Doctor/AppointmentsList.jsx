@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -203,6 +204,12 @@ const AppointmentsList = () => {
                               `}
                             </span>
                           </div>
+                        </div>
+                        <div className="flex items-center justify-between rounded-lg bg-gray-100 p-2 text-black">
+                          Meeting code :
+                          <Badge className="flex items-center space-x-2">
+                            {item.meetingCode}
+                          </Badge>
                         </div>
                       </div>
                     </CardContent>

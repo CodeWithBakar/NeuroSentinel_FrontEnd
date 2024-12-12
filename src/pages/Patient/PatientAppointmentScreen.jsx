@@ -1,12 +1,13 @@
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import "./styles.css";
 
 const PatientAppointmentScreen = () => {
   const { id } = useParams();
   const roomID = id;
   const myCallContainer = useRef(null);
+  const navigate = useNavigation();
 
   useEffect(() => {
     const appID = 524336703;
@@ -36,7 +37,7 @@ const PatientAppointmentScreen = () => {
       },
 
       onLeaveRoom: () => {
-        setIsReviewDialogOpen(true);
+        navigate("/");
       },
     });
 

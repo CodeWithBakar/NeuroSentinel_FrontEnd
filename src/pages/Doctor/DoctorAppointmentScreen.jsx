@@ -1,6 +1,6 @@
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import "./styles.css";
@@ -19,6 +19,7 @@ export const DoctorAppointmentScreen = () => {
     const serverSecret = import.meta.env.VITE_ZEGO_SERVER_SECRET;
     localStorage.setItem("roomID", roomID);
     localStorage.setItem("userRole", "Patient");
+    const navigate = useNavigate();
 
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
@@ -42,7 +43,7 @@ export const DoctorAppointmentScreen = () => {
       },
 
       onLeaveRoom: () => {
-        setIsReviewDialogOpen(true);
+        navigate("/");
       },
     });
 
@@ -80,7 +81,7 @@ export const DoctorAppointmentScreen = () => {
           mode: ZegoUIKitPrebuilt.OneONoneCall,
         },
         onLeaveRoom: () => {
-          setIsReviewDialogOpen(true);
+          navigate("/");
         },
       });
     }
