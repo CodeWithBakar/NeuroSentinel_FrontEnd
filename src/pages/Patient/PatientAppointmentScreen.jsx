@@ -1,6 +1,6 @@
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useNavigation, useParams } from "react-router-dom";
 import "./styles.css";
 
 const PatientAppointmentScreen = () => {

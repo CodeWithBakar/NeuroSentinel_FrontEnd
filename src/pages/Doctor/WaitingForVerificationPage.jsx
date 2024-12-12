@@ -10,9 +10,16 @@ import {
 } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function WaitingForVerificationPage() {
   const navigate = useNavigate();
+  const { checkUser } = useAuth();
+
+  const handleCheckStatus = () => {
+    checkUser();
+    navigate("/");
+  };
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -33,7 +40,7 @@ export default function WaitingForVerificationPage() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button onClick={() => navigate("/")}>
+        <Button onClick={handleCheckStatus}>
           <RefreshCw className="mr-2 h-4 w-4" />
           Check Status
         </Button>
