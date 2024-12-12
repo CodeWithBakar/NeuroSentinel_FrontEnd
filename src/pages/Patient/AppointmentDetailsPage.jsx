@@ -59,10 +59,16 @@ export default function AppointmentDetailsPage() {
     }
   }, [patientId]);
 
-  const isPastDate = (date) => {
-    const appointmentDate = parseISO(date);
-    return isBefore(appointmentDate, new Date());
-  };
+  function isPastDate(appointmentDate, appointmentTime) {
+    const appointmentDateTime = new Date(appointmentDate);
+
+    const [hours, minutes] = appointmentTime.split(":").map(Number);
+    appointmentDateTime.setHours(hours, minutes, 0, 0);
+
+    const now = new Date();
+
+    return appointmentDateTime < now;
+  }
 
   const handleCloseReviewDialog = () => {
     setIsReviewDialogOpen(false);
@@ -128,7 +134,7 @@ export default function AppointmentDetailsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {appointments.map((appointment) => {
-            const isPast = isPastDate(appointment.date);
+            const isPast = isPastDate(appointment.date, appointment.time);
 
             return (
               <React.Fragment>
