@@ -13,13 +13,13 @@ export const DoctorAppointmentScreen = () => {
   const [isSessionSummaryVisible, setIsSessionSummaryVisible] = useState(false);
   const [sessionDuration, setSessionDuration] = useState(null);
   const sessionStartTime = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const appID = 524336703;
     const serverSecret = import.meta.env.VITE_ZEGO_SERVER_SECRET;
     localStorage.setItem("roomID", roomID);
     localStorage.setItem("userRole", "Patient");
-    const navigate = useNavigate();
 
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,

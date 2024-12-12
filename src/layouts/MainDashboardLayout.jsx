@@ -25,7 +25,6 @@ const MainDashboardLayout = () => {
 
   if (user.role === "doctor") {
     if (user.doctor.applicationStatus == "accepted") {
-      alert("You are Verified");
       return <Navigate to="/doctor" />;
     } else if (user.doctor.applicationStatus == "rejected") {
       alert("Sorry your application is rejected!");
