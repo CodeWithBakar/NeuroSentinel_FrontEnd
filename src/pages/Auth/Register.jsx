@@ -224,11 +224,11 @@ function Register() {
                 <SelectValue placeholder="Select a city" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="New York">New York</SelectItem>
-                <SelectItem value="Los Angeles">Los Angeles</SelectItem>
-                <SelectItem value="Chicago">Chicago</SelectItem>
-                <SelectItem value="Houston">Houston</SelectItem>
-                <SelectItem value="Miami">Miami</SelectItem>
+                <SelectItem value="Lahore">Lahore</SelectItem>
+                <SelectItem value="Multan">Multan</SelectItem>
+                <SelectItem value="Islamabad">Islamabad</SelectItem>
+                <SelectItem value="Karachi">Karachi</SelectItem>
+                <SelectItem value="Bahawalpur">Bahawalpur</SelectItem>
               </SelectContent>
             </Select>
           </div>
