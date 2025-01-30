@@ -1,14 +1,14 @@
-"use client";
+// "use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { Input } from "../ui/input";
+
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -23,10 +23,29 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Loader } from "./Loader";
+import { Bar, Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement
+);
 
 export default function StrokePredictionForm() {
   const [predictionResult, setPredictionResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
 
   const {
     register,
@@ -48,6 +67,7 @@ export default function StrokePredictionForm() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setSubmittedData(data); // Save patient data for chart display
     try {
       const response = await fetch("http://127.0.0.1:8000/stroke-predict/", {
         method: "POST",
@@ -65,29 +85,75 @@ export default function StrokePredictionForm() {
       setIsLoading(false);
     }
   };
+  const patientDataChart = {
+    labels: ["Age", "BMI", "Glucose Level"],
+    datasets: [
+      {
+        label: "Patient Data",
+        data: [
+          submittedData?.age || 0,
+          submittedData?.bmi || 0,
+          submittedData?.avg_glucose_level || 0,
+        ],
+        backgroundColor: ["#4caf50", "#ff9800", "#2196f3"],
+        borderColor: ["#388e3c", "#f57c00", "#1976d2"],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const confidenceChartData = {
+    labels: ["No Stroke", "Stroke"],
+    datasets: [
+      {
+        label: "Prediction Confidence",
+        data: [
+          1 - (predictionResult || 0), // No Stroke
+          predictionResult || 0, // Stroke
+        ],
+        backgroundColor: ["#4caf50", "#e53935"],
+        borderColor: ["#388e3c", "#b71c1c"],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto p-6 shadow-lg border rounded-md">
       <CardHeader>
-        <CardTitle>Stroke Prediction Form</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-center text-2xl font-bold text-indigo-700">
+          Stroke Prediction Form
+        </CardTitle>
+        <CardDescription className="text-center text-gray-600">
           Fill out the form below to assess your stroke risk.
         </CardDescription>
         {predictionResult !== null && (
-          <Alert variant={predictionResult === 1 ? "destructive" : "success"}>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Prediction Result</AlertTitle>
-            <AlertDescription>
+          <Alert
+            variant={predictionResult === 1 ? "destructive" : "success"}
+            className="mt-4"
+          >
+            <AlertCircle
+              className={`h-5 w-5 ${
+                predictionResult === 1 ? "text-red-600" : "text-green-600"
+              }`}
+            />
+            <AlertTitle>
               {predictionResult === 1
                 ? "Stroke Risk Detected"
                 : "No Stroke Risk Detected"}
+            </AlertTitle>
+            <AlertDescription>
+              {predictionResult === 1
+                ? "High risk of stroke detected based on your input."
+                : "No significant risk of stroke detected."}
             </AlertDescription>
           </Alert>
         )}
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Age */}
             <div>
               <Label htmlFor="age">Age</Label>
               <Input
@@ -96,15 +162,16 @@ export default function StrokePredictionForm() {
                 {...register("age", {
                   required: "Age is required",
                   min: { value: 0, message: "Age cannot be negative" },
-                  max: { value: 120, message: "Age must be between 0 and 120" },
+                  max: { value: 120, message: "Age must be realistic" },
                 })}
                 placeholder="Enter your age"
               />
               {errors.age && (
-                <p className="text-red-500">{errors.age.message}</p>
+                <p className="text-red-500 mt-1">{errors.age.message}</p>
               )}
             </div>
 
+            {/* Hypertension */}
             <div>
               <Label htmlFor="hypertension">Hypertension</Label>
               <Select
@@ -122,6 +189,7 @@ export default function StrokePredictionForm() {
               </Select>
             </div>
 
+            {/* Heart Disease */}
             <div>
               <Label htmlFor="heart_disease">Heart Disease</Label>
               <Select
@@ -139,8 +207,9 @@ export default function StrokePredictionForm() {
               </Select>
             </div>
 
+            {/* Average Glucose Level */}
             <div>
-              <Label htmlFor="avg_glucose_level">Average Glucose Level</Label>
+              <Label htmlFor="avg_glucose_level">Avg Glucose Level</Label>
               <Input
                 id="avg_glucose_level"
                 type="number"
@@ -148,18 +217,19 @@ export default function StrokePredictionForm() {
                   required: "Average glucose level is required",
                   min: {
                     value: 0,
-                    message: "Glucose level cannot be negative",
+                    message: "Glucose level must be a positive value",
                   },
                 })}
-                placeholder="Enter glucose level"
+                placeholder="Enter average glucose level"
               />
               {errors.avg_glucose_level && (
-                <p className="text-red-500">
+                <p className="text-red-500 mt-1">
                   {errors.avg_glucose_level.message}
                 </p>
               )}
             </div>
 
+            {/* BMI */}
             <div>
               <Label htmlFor="bmi">BMI</Label>
               <Input
@@ -168,15 +238,16 @@ export default function StrokePredictionForm() {
                 {...register("bmi", {
                   required: "BMI is required",
                   min: { value: 0, message: "BMI cannot be negative" },
-                  max: { value: 100, message: "BMI must be less than 100" },
+                  max: { value: 100, message: "BMI must be realistic" },
                 })}
                 placeholder="Enter BMI"
               />
               {errors.bmi && (
-                <p className="text-red-500">{errors.bmi.message}</p>
+                <p className="text-red-500 mt-1">{errors.bmi.message}</p>
               )}
             </div>
 
+            {/* Smoking Status */}
             <div>
               <Label htmlFor="smoking_status">Smoking Status</Label>
               <Select
@@ -194,6 +265,7 @@ export default function StrokePredictionForm() {
               </Select>
             </div>
 
+            {/* Residence Type */}
             <div>
               <Label htmlFor="Residence_type">Residence Type</Label>
               <Select
@@ -211,6 +283,7 @@ export default function StrokePredictionForm() {
               </Select>
             </div>
 
+            {/* Ever Married */}
             <div>
               <Label htmlFor="ever_married">Ever Married</Label>
               <Select
@@ -228,6 +301,7 @@ export default function StrokePredictionForm() {
               </Select>
             </div>
 
+            {/* Work Type */}
             <div>
               <Label htmlFor="work_type">Work Type</Label>
               <Select
@@ -248,10 +322,63 @@ export default function StrokePredictionForm() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all"
+          >
             {isLoading ? <Loader /> : "Submit"}
           </Button>
         </form>
+        <div></div>
+      </CardContent>
+      <CardContent>
+        {submittedData && predictionResult !== null && (
+          <div className="mt-8 space-y-8">
+            {/* Patient Data Chart */}
+            <div className="p-4 bg-gray-100 rounded-md shadow-md">
+              <h3 className="text-center text-lg font-semibold text-indigo-600 mb-4">
+                Patient Diagnostic Data
+              </h3>
+              <Bar data={patientDataChart} />
+            </div>
+          </div>
+        )}
+        {predictionResult !== null && (
+          <div className="mt-8">
+            <Alert
+              variant={predictionResult === 1 ? "destructive" : "success"}
+              className="mt-4"
+            >
+              <AlertCircle
+                className={`h-5 w-5 ${
+                  predictionResult === 1 ? "text-red-600" : "text-green-600"
+                }`}
+              />
+              <AlertTitle>
+                {predictionResult === 1
+                  ? "Stroke Risk Detected"
+                  : "No Stroke Risk Detected"}
+              </AlertTitle>
+              <AlertDescription>
+                {predictionResult === 1
+                  ? `High risk of stroke with ${
+                      predictionResult * 100
+                    }% confidence.`
+                  : "No significant risk of stroke detected."}
+              </AlertDescription>
+            </Alert>
+
+            {/* Confidence Chart */}
+            <div className="mt-8">
+              <h3 className="text-center font-bold mb-4">
+                Prediction Confidence
+              </h3>
+              <div className="w-80 h-80 mx-auto">
+                <Pie data={confidenceChartData} />
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

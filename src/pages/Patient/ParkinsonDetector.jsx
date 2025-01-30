@@ -10,14 +10,13 @@
 // // Register Chart.js components
 // ChartJS.register(ArcElement, Tooltip, Legend);
 
-// export const AlzeimerDetection = () => {
+// export const ParkinsonDetector = () => {
 //   const [file, setFile] = useState(null);
 //   const [preview, setPreview] = useState(null);
 //   const [response, setResponse] = useState(null);
 //   const [error, setError] = useState(null);
 //   const [isLoading, setIsLoading] = useState(false);
 //   const chartRef = useRef(null);
-//   // const { user } = useAuth();
 
 //   const handleFileChange = useCallback((e) => {
 //     const selectedFile = e.target.files?.[0];
@@ -42,10 +41,13 @@
 //     formData.append("patientId", "9238497329218312");
 
 //     try {
-//       const res = await fetch("http://localhost:9002/detection/detect-alzehimer", {
-//         method: "POST",
-//         body: formData,
-//       });
+//       const res = await fetch(
+//         "http://localhost:9002/detection/detect-parkinson",
+//         {
+//           method: "POST",
+//           body: formData,
+//         }
+//       );
 
 //       if (!res.ok) {
 //         throw new Error("Upload failed");
@@ -64,8 +66,9 @@
 //   const downloadPdfReport = async () => {
 //     try {
 //       const pdf = new jsPDF("p", "mm", "a4");
-//       const title = "Alzheimer Detection Report";
+//       const title = "Parkinson Detection Report";
 //       const date = new Date().toLocaleDateString();
+//       // const { user } = useAuth();
 
 //       // Title Section
 //       pdf.setFontSize(22);
@@ -76,7 +79,8 @@
 
 //       // Adding Image Preview (if available)
 //       if (preview) {
-//         const imgElement = document.querySelector("#uploadedImage");        const imgCanvas = await html2canvas(imgElement, { scale: 2 });
+//         const imgElement = document.querySelector("#uploadedImage");
+//         const imgCanvas = await html2canvas(imgElement, { scale: 2 });
 //         const imgData = imgCanvas.toDataURL("image/png");
 //         pdf.text("Uploaded Image:", 20, 50);
 //         pdf.addImage(imgData, "PNG", 20, 60, 160, 90);
@@ -85,7 +89,11 @@
 //       // Adding Detection Results
 //       if (response) {
 //         pdf.text(`Diagnosis: ${response.label}`, 20, 160);
-//         pdf.text(`Confidence: ${(response.confidence * 100).toFixed(2)}%`, 20, 170);
+//         pdf.text(
+//           `Confidence: ${(response.confidence * 100).toFixed(2)}%`,
+//           20,
+//           170
+//         );
 //         pdf.text(`Severity: ${response.severity}`, 20, 180);
 
 //         // Adding Confidence Chart
@@ -99,7 +107,7 @@
 //       }
 
 //       // Save the PDF file
-//       pdf.save("Alzheimer Disease_detection_report.pdf");
+//       pdf.save("parkinson_detection_report.pdf");
 //     } catch (error) {
 //       console.error("Error generating PDF:", error);
 //       alert("Failed to download the report. Please try again.");
@@ -137,7 +145,7 @@
 //   return (
 //     <div className="p-6 max-w-4xl mx-auto">
 //       <h2 className="text-2xl font-semibold text-center mb-6">
-//         Alzheimer Disease Detection
+//         Parkinson Detection
 //       </h2>
 
 //       {/* File Upload */}
@@ -151,7 +159,9 @@
 //             <p className="text-sm text-gray-500 group-hover:text-blue-600 transition">
 //               Click to upload or drag and drop
 //             </p>
-//             <p className="text-xs text-gray-400">Spiral Drawings (Preferred: Coronal View)</p>
+//             <p className="text-xs text-gray-400">
+//               MRI Scan Images (Preferred: Coronal View)
+//             </p>
 //           </div>
 //           <input
 //             id="file-upload"
@@ -206,7 +216,9 @@
 //       {/* Response Section */}
 //       {response && (
 //         <div className="bg-white p-6 rounded-lg shadow-md">
-//           <h3 className="text-xl font-medium mb-4 text-blue-700">Detection Results:</h3>
+//           <h3 className="text-xl font-medium mb-4 text-blue-700">
+//             Detection Results:
+//           </h3>
 //           <div className="grid md:grid-cols-2 gap-4">
 //             {/* Diagnostic Data */}
 //             <div>
@@ -214,7 +226,9 @@
 //                 <strong className="text-gray-700">Diagnosis:</strong>
 //                 <span
 //                   className={`ml-2 ${
-//                     response.label === "Normal" ? "text-green-600" : "text-red-600"
+//                     response.label === "Normal"
+//                       ? "text-green-600"
+//                       : "text-red-600"
 //                   }`}
 //                 >
 //                   {response.label}
@@ -222,18 +236,29 @@
 //               </p>
 //               <p className="mb-2">
 //                 <strong className="text-gray-700">Severity:</strong>
-//                 <span className="ml-2">{response.severity || "Not Specified"}</span>
+//                 <span className="ml-2">
+//                   {response.severity || "Not Specified"}
+//                 </span>
 //               </p>
 //               <p className="text-sm text-gray-600 italic">
-//                 Please consult a healthcare professional for a definitive diagnosis.
+//                 Please consult a healthcare professional for a definitive
+//                 diagnosis.
 //               </p>
 //             </div>
 
 //             {/* Doughnut Chart */}
 //             <div className="w-80 h-80 relative">
-//               {chartData && <Doughnut data={chartData} options={chartOptions} ref={chartRef} />}
+//               {chartData && (
+//                 <Doughnut
+//                   data={chartData}
+//                   options={chartOptions}
+//                   ref={chartRef}
+//                 />
+//               )}
 //               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-//                 <span className="text-lg font-semibold text-gray-800">{response.label}</span>
+//                 <span className="text-lg font-semibold text-gray-800">
+//                   {response.label}
+//                 </span>
 //                 <span className="text-sm text-gray-600 mt-1">
 //                   Confidence: {Math.floor(response.confidence * 100)}%
 //                 </span>
@@ -253,7 +278,7 @@
 //   );
 // };
 
-// export default AlzeimerDetection;
+// export default ParkinsonDetector;
 
 import { useState, useCallback, useRef } from "react";
 import { AlertCircle, UploadCloud, Download } from "lucide-react";
@@ -262,19 +287,17 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-// import { useAuth } from "@/context/AuthContext";
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const AlzeimerDetection = () => {
+export const ParkinsonDetector = () => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const chartRef = useRef(null);
-  // const { user } = useAuth();
 
   const handleFileChange = useCallback((e) => {
     const selectedFile = e.target.files?.[0];
@@ -300,7 +323,7 @@ export const AlzeimerDetection = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:9002/detection/detect-alzehimer",
+        "http://localhost:9002/detection/detect-parkinson",
         {
           method: "POST",
           body: formData,
@@ -324,7 +347,7 @@ export const AlzeimerDetection = () => {
   const downloadPdfReport = async () => {
     try {
       const pdf = new jsPDF("p", "mm", "a4");
-      const title = "Alzheimer Detection Report";
+      const title = "Parkinson Detection Report";
       const date = new Date().toLocaleDateString();
 
       // Title Section
@@ -332,7 +355,6 @@ export const AlzeimerDetection = () => {
       pdf.text(title, 20, 20);
       pdf.setFontSize(14);
       pdf.text(`Date: ${date}`, 20, 40);
-      // pdf.text(`Patient Name: ${user.firstName} ${user.lastName}`, 20, 40);
 
       // Adding Image Preview (if available)
       if (preview) {
@@ -363,7 +385,7 @@ export const AlzeimerDetection = () => {
       }
 
       // Save the PDF file
-      pdf.save("Alzheimer Disease_detection_report.pdf");
+      pdf.save("parkinson_detection_report.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
       alert("Failed to download the report. Please try again.");
@@ -376,13 +398,16 @@ export const AlzeimerDetection = () => {
         labels: ["Confidence", "Uncertainty"],
         datasets: [
           {
-            data: [response.confidence * 100, 100 - response.confidence * 100],
+            data: [
+              Math.floor(response.confidence * 100),
+              100 - Math.floor(response.confidence * 100),
+            ],
             backgroundColor: [
-              response.label === "Normal" ? "#4CAF50" : "#F44336", // Green for Normal, Red for Alzheimer's
+              response.label === "Healthy" ? "#4CAF50" : "#F44336", // Green for Healthy, Red for Parkinson
               "#E0E0E0", // Gray for Uncertainty
             ],
             hoverBackgroundColor: [
-              response.label === "Normal" ? "#66BB6A" : "#E57373",
+              response.label === "Healthy" ? "#66BB6A" : "#E57373",
               "#BDBDBD",
             ],
             borderWidth: 1,
@@ -398,7 +423,7 @@ export const AlzeimerDetection = () => {
           label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}%`,
         },
       },
-      legend: { position: "bottom" },
+      legend: { display: false }, // Hide legend for a cleaner chart
     },
     cutout: "70%",
     responsive: true,
@@ -407,7 +432,7 @@ export const AlzeimerDetection = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h2 className="text-2xl font-semibold text-center mb-6">
-        Alzheimer Disease Detection
+        Parkinson Detection
       </h2>
 
       {/* File Upload */}
@@ -422,7 +447,7 @@ export const AlzeimerDetection = () => {
               Click to upload or drag and drop
             </p>
             <p className="text-xs text-gray-400">
-              Spiral Drawings (Preferred: Coronal View)
+              MRI Scan Images (Preferred: Coronal View)
             </p>
           </div>
           <input
@@ -488,7 +513,7 @@ export const AlzeimerDetection = () => {
                 <strong className="text-gray-700">Diagnosis:</strong>
                 <span
                   className={`ml-2 ${
-                    response.label === "Normal"
+                    response.label === "Healthy"
                       ? "text-green-600"
                       : "text-red-600"
                   }`}
@@ -520,7 +545,7 @@ export const AlzeimerDetection = () => {
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <span
                   className={`text-lg font-semibold ${
-                    response.label === "Normal"
+                    response.label === "Healthy"
                       ? "text-green-600"
                       : "text-red-600"
                   }`}
@@ -546,4 +571,4 @@ export const AlzeimerDetection = () => {
   );
 };
 
-export default AlzeimerDetection;
+export default ParkinsonDetector;

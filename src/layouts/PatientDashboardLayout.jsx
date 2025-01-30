@@ -43,16 +43,16 @@ const patientSidebarLinks = [
         href: "/patient/upload-details/alzeimer-scan",
         icon: FileText,
       },
-      // {
-      //   name: "Brain Hemmorhages",
-      //   href: "/patient/upload-details/hemmorhages-scan",
-      //   icon: FileText,
-      // },
-      // {
-      //   name: "Spiral Drawing",
-      //   href: "/patient/upload-details/spiral-details",
-      //   icon: FileText,
-      // },
+      {
+        name: "Brain Hemmorhages",
+        href: "/patient/upload-details/hemmorhages-scan",
+        icon: FileText,
+      },
+      {
+        name: "Spiral Drawing",
+        href: "/patient/upload-details/spiral-details",
+        icon: FileText,
+      },
       {
         name: "Stroke Prediction",
         href: "/patient/upload-details/predict-stroke",

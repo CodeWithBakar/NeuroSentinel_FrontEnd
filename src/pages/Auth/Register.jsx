@@ -229,6 +229,10 @@ function Register() {
                 <SelectItem value="Islamabad">Islamabad</SelectItem>
                 <SelectItem value="Karachi">Karachi</SelectItem>
                 <SelectItem value="Bahawalpur">Bahawalpur</SelectItem>
+                <SelectItem value="Faisalabad">Faisalabad</SelectItem>
+                <SelectItem value="Quetta">Quetta</SelectItem>
+                <SelectItem value="Murree">Murree</SelectItem>
+                <SelectItem value="other">other</SelectItem>
               </SelectContent>
             </Select>
           </div>

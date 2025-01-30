@@ -22,8 +22,8 @@ import { PatientHome } from "@/pages/Patient/PatientHome";
 import PatientReport from "@/pages/Patient/PatientReport";
 import { ReportsList } from "@/pages/Doctor/ReportsList";
 import { AlzeimerDetection } from "@/pages/Patient/AlzeimerDetection";
-import { BrainHemmorages } from "@/pages/Patient/BrainHemmorages";
-import { SpiralDetector } from "@/pages/Patient/SpiralDetector";
+import HemorrhageDetector from "@/pages/Patient/HemorrhageDetector";
+import ParkinsonDetector from "@/pages/Patient/ParkinsonDetector";
 import PatientAppointmentScreen from "@/pages/Patient/PatientAppointmentScreen";
 import { DoctorAppointmentScreen } from "@/pages/Doctor/DoctorAppointmentScreen";
 import { PredictStroke } from "@/pages/Patient/PredictStroke";
@@ -57,14 +57,14 @@ const RouterMain = createBrowserRouter([
             path: "upload-details/alzeimer-scan",
             element: <AlzeimerDetection />,
           },
-          // {
-          //   path: "upload-details/hemmorhages-scan",
-          //   element: <BrainHemmorages />,
-          // },
-          // {
-          //   path: "upload-details/spiral-details",
-          //   element: <SpiralDetector />,
-          // },
+          {
+            path: "upload-details/hemmorhages-scan",
+            element: <HemorrhageDetector />,
+          },
+          {
+            path: "upload-details/spiral-details",
+            element: <ParkinsonDetector />,
+          },
           {
             path: "upload-details/predict-stroke",
             element: <PredictStroke />,

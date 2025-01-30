@@ -248,12 +248,12 @@ export default function AvailableSlots() {
         pendingAppointmentsComponent()
       ) : (
         <div className="w-full p-4 space-y-4">
-          <Input
+          <input
             type="search"
-            placeholder="Search doctors..."
+            placeholder="Search for doctors by name or specialization"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
+            className="block p-3 w-full text-sm text-gray-900 bg-white border border-gray-300 rounded-r-lg focus:ring-blue-500 focus:border-blue-500"
           />
           <div className="border rounded-lg overflow-hidden">
             <Table>
